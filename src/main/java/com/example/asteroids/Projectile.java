@@ -24,4 +24,21 @@ public class Projectile extends Character {
 
     }
 
+    public boolean isOnScreen() {
+        boolean onScreen = true;
+
+        if (super.getCharacter().getTranslateX() < 0
+                || super.getCharacter().getTranslateY() >= AsteroidsApplication.WIDTH) {
+            onScreen = false;
+        }
+
+        if (super.getCharacter().getTranslateY() < 0
+                || super.getCharacter().getTranslateY() >= AsteroidsApplication.HEIGHT) {
+            onScreen = false;
+        }
+
+        return onScreen;
+
+    }
+
 }

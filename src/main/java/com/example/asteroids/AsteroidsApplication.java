@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
+
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -45,22 +46,18 @@ public class AsteroidsApplication extends Application {
 
         Map<KeyCode, Boolean> pressedKeys = new HashMap<>();
 
-        List<Projectile> heat = new ArrayList<>();
+        List<Projectile> projectiles = new ArrayList<>();
         List<Asteroid> asteroids = createAsteroids();
 
         for (Asteroid a : asteroids) {
             pane.getChildren().add(a.getCharacter());
         }
 
-        view.setOnKeyPressed(event -> {
-            pressedKeys.put(event.getCode(), Boolean.TRUE);
-        });
+        view.setOnKeyPressed(event -> pressedKeys.put(event.getCode(), Boolean.TRUE));
 
-        view.setOnKeyReleased(event -> {
-            pressedKeys.put(event.getCode(), Boolean.FALSE);
-        });
+        view.setOnKeyReleased(event -> pressedKeys.put(event.getCode(), Boolean.FALSE));
 
-        new AnimationTimer() {
+        new AnimationTimer()  {
 
             @Override
             public void handle(long now) {
@@ -87,13 +84,13 @@ public class AsteroidsApplication extends Application {
                     ship.accelerate();
                 }
 
-                if (pressedKeys.getOrDefault(KeyCode.SPACE, false && heat.size() < 1)) {
+                if (pressedKeys.getOrDefault(KeyCode.SPACE, false && projectiles.size() < 3)) {
                     Projectile projectile
                             = new Projectile((int) ship.getCharacter().getTranslateX(),
                             (int) ship.getCharacter().getTranslateY());
 
                     projectile.getCharacter().setRotate(ship.getCharacter().getRotate());
-                    heat.add(projectile);
+                    projectiles.add(projectile);
                     projectile.accelerate();
                     projectile.setMovement(projectile.getMovement().normalize().multiply(3));
 
@@ -101,10 +98,11 @@ public class AsteroidsApplication extends Application {
                 }
 
                 ship.move();
-                asteroids.forEach(asteroid -> asteroid.move());
-                heat.forEach(projectile -> projectile.move());
+                asteroids.forEach(Asteroid::move);
+                projectiles.forEach(Projectile::move);
 
-                heat.forEach(projectile -> {
+                //this needs to be improved
+                projectiles.forEach(projectile -> {
                     asteroids.forEach(asteroid -> {
                         if (projectile.collide(asteroid)) {
                             projectile.setAliveStatus(false);
@@ -117,17 +115,28 @@ public class AsteroidsApplication extends Application {
                         text.setText("points: " + points.addAndGet(100));
                     }
 
+                    if (!projectile.isOnScreen()) {
+                        pane.getChildren().remove(projectile.getCharacter());
+                    }
+
                 });
 
                 //I think all of this should maybe just be a function
-                heat.stream()
+
+                projectiles.stream()
                         .filter(projectile -> !projectile.getAliveStatus())
                         .forEach(projectile -> pane.getChildren()
                                 .remove(projectile.getCharacter()));
 
-                heat.removeAll(heat.stream()
-                        .filter((projectile -> !projectile.getAliveStatus()))
+                projectiles.removeAll(projectiles.stream()
+                        .filter(projectile -> !projectile.getAliveStatus())
                         .collect(Collectors.toList()));
+
+
+                projectiles.removeAll(projectiles.stream()
+                        .filter(projectile -> !projectile.isOnScreen())
+                        .collect(Collectors.toList()));
+
 
                 asteroids.stream()
                         .filter(asteroid -> !asteroid.getAliveStatus())
@@ -143,7 +152,7 @@ public class AsteroidsApplication extends Application {
                         stop();
                     }
                 });
-
+                System.out.println(projectiles.size());
             }
 
         }.start();
@@ -153,7 +162,7 @@ public class AsteroidsApplication extends Application {
         List<Asteroid> asteroids = new ArrayList<>();
         Random rand = new Random();
 
-        for (int i = 0; i < 8; i++) {
+        for (int i = 0; i < 10; i++) {
             Asteroid asteroid
                     = new Asteroid(rand.nextInt(WIDTH), rand.nextInt(HEIGHT));
             asteroids.add(asteroid);
