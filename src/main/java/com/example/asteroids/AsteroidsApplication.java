@@ -66,7 +66,7 @@ public class AsteroidsApplication extends Application {
             public void handle(long now) {
 
                 //maybe you could add a timer which causes
-                //a higher likelihood for asteorids to be made
+                //a higher likelihood for asteroids to be made
                 if (Math.random() < 0.010) {
                     Asteroid asteroid = new Asteroid(WIDTH, HEIGHT);
                     if (!asteroid.collide(ship)) {
