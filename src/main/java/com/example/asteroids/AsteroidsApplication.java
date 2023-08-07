@@ -57,7 +57,7 @@ public class AsteroidsApplication extends Application {
 
         view.setOnKeyReleased(event -> pressedKeys.put(event.getCode(), Boolean.FALSE));
 
-        new AnimationTimer()  {
+        new AnimationTimer() {
 
             @Override
             public void handle(long now) {
@@ -121,41 +121,56 @@ public class AsteroidsApplication extends Application {
 
                 });
 
-                //I think all of this should maybe just be a function
-
-                projectiles.stream()
-                        .filter(projectile -> !projectile.getAliveStatus())
-                        .forEach(projectile -> pane.getChildren()
-                                .remove(projectile.getCharacter()));
-
-                projectiles.removeAll(projectiles.stream()
-                        .filter(projectile -> !projectile.getAliveStatus())
-                        .collect(Collectors.toList()));
-
-
-                projectiles.removeAll(projectiles.stream()
-                        .filter(projectile -> !projectile.isOnScreen())
-                        .collect(Collectors.toList()));
-
-
-                asteroids.stream()
-                        .filter(asteroid -> !asteroid.getAliveStatus())
-                        .forEach(asteroid -> pane.getChildren()
-                                .remove(asteroid.getCharacter()));
-
-                asteroids.removeAll(asteroids.stream()
-                        .filter(asteroid -> !asteroid.getAliveStatus())
-                        .collect(Collectors.toList()));
+                cleanUp(asteroids, projectiles, pane);
 
                 asteroids.forEach(asteroid -> {
                     if (ship.collide(asteroid)) {
                         stop();
                     }
                 });
-                System.out.println(projectiles.size());
+
             }
 
         }.start();
+    }
+
+    /**
+     * This is a cleanup method which removes objects from the
+     * game which are no longer relevant, like a projectile
+     * which is off-screen or an asteroid that's been destroyed.
+     *
+     * @param asteroids - The array containing asteroids.
+     * @param projectiles - The array containing projectiles.
+     * @param pane - Pane where game occurs.
+     */
+    public void cleanUp(List<Asteroid> asteroids,
+                        List<Projectile> projectiles,
+                        Pane pane) {
+
+        projectiles.stream()
+                .filter(projectile -> !projectile.getAliveStatus())
+                .forEach(projectile -> pane.getChildren()
+                        .remove(projectile.getCharacter()));
+
+        projectiles.removeAll(projectiles.stream()
+                .filter(projectile -> !projectile.getAliveStatus())
+                .collect(Collectors.toList()));
+
+
+        projectiles.removeAll(projectiles.stream()
+                .filter(projectile -> !projectile.isOnScreen())
+                .collect(Collectors.toList()));
+
+
+        asteroids.stream()
+                .filter(asteroid -> !asteroid.getAliveStatus())
+                .forEach(asteroid -> pane.getChildren()
+                        .remove(asteroid.getCharacter()));
+
+        asteroids.removeAll(asteroids.stream()
+                .filter(asteroid -> !asteroid.getAliveStatus())
+                .collect(Collectors.toList()));
+
     }
 
     public List<Asteroid> createAsteroids() {
