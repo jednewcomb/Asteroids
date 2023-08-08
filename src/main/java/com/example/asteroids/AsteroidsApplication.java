@@ -57,13 +57,19 @@ public class AsteroidsApplication extends Application {
 
         view.setOnKeyReleased(event -> pressedKeys.put(event.getCode(), Boolean.FALSE));
 
+
+
         new AnimationTimer() {
 
+            long lastUpdate = 0;
             @Override
+
             public void handle(long now) {
 
                 //maybe you could add a timer which causes
                 //a higher likelihood for asteroids to be made
+
+
                 if (Math.random() < 0.010) {
                     Asteroid asteroid = new Asteroid(WIDTH, HEIGHT);
                     if (!asteroid.collide(ship)) {
@@ -84,17 +90,24 @@ public class AsteroidsApplication extends Application {
                     ship.accelerate();
                 }
 
-                if (pressedKeys.getOrDefault(KeyCode.SPACE, false && projectiles.size() < 3)) {
-                    Projectile projectile
-                            = new Projectile((int) ship.getCharacter().getTranslateX(),
-                            (int) ship.getCharacter().getTranslateY());
+                if (pressedKeys.getOrDefault(KeyCode.SPACE, false)) {
 
-                    projectile.getCharacter().setRotate(ship.getCharacter().getRotate());
-                    projectiles.add(projectile);
-                    projectile.accelerate();
-                    projectile.setMovement(projectile.getMovement().normalize().multiply(3));
+                    //With our long lastUpdate, we can use the animation timer
+                    //to check that the last time a projectile was shot was
+                    //500 milliseconds (.5 seconds)
+                    if (now - lastUpdate >= 500_000_000) {
+                        Projectile projectile
+                                = new Projectile((int) ship.getCharacter().getTranslateX(),
+                                (int) ship.getCharacter().getTranslateY());
+                        projectile.getCharacter().setRotate(ship.getCharacter().getRotate());
+                        projectiles.add(projectile);
+                        projectile.accelerate();
+                        projectile.setMovement(projectile.getMovement().normalize().multiply(3));
 
-                    pane.getChildren().add(projectile.getCharacter());
+                        pane.getChildren().add(projectile.getCharacter());
+                        lastUpdate = now ;
+                    }
+
                 }
 
                 ship.move();
@@ -143,8 +156,7 @@ public class AsteroidsApplication extends Application {
      * @param projectiles - The array containing projectiles.
      * @param pane - Pane where game occurs.
      */
-    public void cleanUp(List<Asteroid> asteroids,
-                        List<Projectile> projectiles,
+    public void cleanUp(List<Asteroid> asteroids, List<Projectile> projectiles,
                         Pane pane) {
 
         projectiles.stream()
