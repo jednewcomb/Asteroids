@@ -149,7 +149,7 @@ public class AsteroidsApplication extends Application {
 
     /**
      * This is a cleanup method which removes objects from the
-     * game which are no longer relevant, like a projectile
+     * lists which are no longer relevant, like a projectile
      * which is off-screen or an asteroid that's been destroyed.
      *
      * @param asteroids - The array containing asteroids.
