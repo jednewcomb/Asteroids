@@ -32,11 +32,11 @@ public abstract class Character {
     }
 
     public void turnLeft() {
-        this.character.setRotate(this.character.getRotate() - 5);
+        this.character.setRotate(this.character.getRotate() - 4);
     }
 
     public void turnRight() {
-        this.character.setRotate(this.character.getRotate() + 5);
+        this.character.setRotate(this.character.getRotate() + 4);
     }
 
     public void setMovement(Point2D movement) {

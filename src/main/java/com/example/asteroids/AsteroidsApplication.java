@@ -21,6 +21,7 @@ public class AsteroidsApplication extends Application {
     public static int WIDTH = 600;
     public static int HEIGHT = 400;
 
+
     @Override
     public void start(Stage window) throws Exception {
         Pane pane = new Pane();
@@ -57,18 +58,16 @@ public class AsteroidsApplication extends Application {
 
         view.setOnKeyReleased(event -> pressedKeys.put(event.getCode(), Boolean.FALSE));
 
-
-
         new AnimationTimer() {
 
             long lastUpdate = 0;
+
             @Override
 
             public void handle(long now) {
 
                 //maybe you could add a timer which causes
                 //a higher likelihood for asteroids to be made
-
 
                 if (Math.random() < 0.010) {
                     Asteroid asteroid = new Asteroid(WIDTH, HEIGHT);
@@ -105,7 +104,7 @@ public class AsteroidsApplication extends Application {
                         projectile.setMovement(projectile.getMovement().normalize().multiply(3));
 
                         pane.getChildren().add(projectile.getCharacter());
-                        lastUpdate = now ;
+                        lastUpdate = now;
                     }
 
                 }
@@ -152,9 +151,9 @@ public class AsteroidsApplication extends Application {
      * lists which are no longer relevant, like a projectile
      * which is off-screen or an asteroid that's been destroyed.
      *
-     * @param asteroids - The array containing asteroids.
+     * @param asteroids   - The array containing asteroids.
      * @param projectiles - The array containing projectiles.
-     * @param pane - Pane where game occurs.
+     * @param pane        - Pane where game occurs.
      */
     public void cleanUp(List<Asteroid> asteroids, List<Projectile> projectiles,
                         Pane pane) {
