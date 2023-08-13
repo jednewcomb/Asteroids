@@ -5,6 +5,7 @@
 package com.example.asteroids;
 
 import javafx.geometry.Point2D;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Shape;
 
@@ -20,6 +21,7 @@ public abstract class Character {
 
     public Character(Polygon polygon, int x, int y) {
         this.character = polygon;
+        this.character.setFill(Color.WHITE);
         this.character.setTranslateX(x);
         this.character.setTranslateY(y);
         this.aliveStatus = true;

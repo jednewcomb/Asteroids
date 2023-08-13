@@ -13,6 +13,7 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -20,17 +21,23 @@ public class AsteroidsApplication extends Application {
 
     public static int WIDTH = 600;
     public static int HEIGHT = 400;
-
+    long lastUpdate = 0;
+    double difficultyTimer = 0.010;
+    long difficultyUpdate = 0;
+    final long since = 30_000_000_000L;
 
     @Override
     public void start(Stage window) throws Exception {
         Pane pane = new Pane();
+
         pane.setPrefSize(WIDTH, HEIGHT);
+
 
         Ship ship = new Ship(WIDTH / 2, HEIGHT / 2);
         pane.getChildren().add(ship.getCharacter());
 
         Scene view = new Scene(pane);
+        view.setFill(Color.BLACK);
         handleActions(view, pane, ship);
 
         window.setTitle("Asteroids!");
@@ -41,6 +48,7 @@ public class AsteroidsApplication extends Application {
 
     public void handleActions(Scene view, Pane pane, Ship ship) {
         Text text = new Text(10, 20, "Points: 0");
+        text.setFill(Color.WHITE);
         pane.getChildren().add(text);
 
         AtomicInteger points = new AtomicInteger();
@@ -60,24 +68,18 @@ public class AsteroidsApplication extends Application {
 
         new AnimationTimer() {
 
-            long lastUpdate = 0;
-            double difficultyTimer = 0.010;
-            long difficultyUpdate = 0;
-            final long since = 15_000_000_000L;
+
 
             @Override
 
             public void handle(long now) {
 
-                /*
-
-
                 if (now - difficultyUpdate >= since) {
-                    difficultyTimer += 0.10;
+                    if (difficultyTimer <= 0.050) {
+                        difficultyTimer += 0.001;
+                    }
                     difficultyUpdate = now;
                 }
-                
-                 */
 
                 if (Math.random() < difficultyTimer) {
                     Asteroid asteroid = new Asteroid(WIDTH, HEIGHT);
