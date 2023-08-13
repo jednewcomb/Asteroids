@@ -61,15 +61,25 @@ public class AsteroidsApplication extends Application {
         new AnimationTimer() {
 
             long lastUpdate = 0;
+            double difficultyTimer = 0.010;
+            long difficultyUpdate = 0;
+            final long since = 15_000_000_000L;
 
             @Override
 
             public void handle(long now) {
 
-                //maybe you could add a timer which causes
-                //a higher likelihood for asteroids to be made
+                /*
 
-                if (Math.random() < 0.010) {
+
+                if (now - difficultyUpdate >= since) {
+                    difficultyTimer += 0.10;
+                    difficultyUpdate = now;
+                }
+                
+                 */
+
+                if (Math.random() < difficultyTimer) {
                     Asteroid asteroid = new Asteroid(WIDTH, HEIGHT);
                     if (!asteroid.collide(ship)) {
                         asteroids.add(asteroid);
@@ -188,9 +198,24 @@ public class AsteroidsApplication extends Application {
         List<Asteroid> asteroids = new ArrayList<>();
         Random rand = new Random();
 
-        for (int i = 0; i < 10; i++) {
+
+        for (int i = 0; i < 15; i++) {
+            int spawnX = rand.nextInt(WIDTH);
+            int spawnY = rand.nextInt(HEIGHT);
+
+            //padding loops to ensure we don't spawn
+            //an asteroid right on our ship, because
+            //that would be pretty lame, man.
+            while (spawnX >= (WIDTH / 2) - 50 && spawnX <= (WIDTH / 2) + 50) {
+                spawnX = rand.nextInt();
+            }
+
+            while (spawnY >= (HEIGHT / 2) - 50 && spawnX <= (HEIGHT / 2) + 50) {
+                spawnY = rand.nextInt();
+            }
+
             Asteroid asteroid
-                    = new Asteroid(rand.nextInt(WIDTH), rand.nextInt(HEIGHT));
+                    = new Asteroid(spawnX, spawnY);
             asteroids.add(asteroid);
         }
 
