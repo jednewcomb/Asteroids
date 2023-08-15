@@ -1,6 +1,5 @@
-package com.example.asteroids;
+package com.JedN.asteroids;
 
-import javafx.geometry.Point2D;
 import javafx.scene.shape.Polygon;
 
 /**

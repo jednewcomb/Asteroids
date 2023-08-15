@@ -1,4 +1,4 @@
-package com.example.asteroids;
+package com.JedN.asteroids;
 
 import java.util.Random;
 import javafx.scene.shape.Polygon;

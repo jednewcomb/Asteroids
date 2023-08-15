@@ -1,4 +1,4 @@
-package com.example.asteroids;
+package com.JedN.asteroids;
 
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
@@ -8,6 +8,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.scene.media.AudioClip;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -61,6 +62,8 @@ public class AsteroidsApplication extends Application {
                 }
 
                 if (pressedKeys.getOrDefault(KeyCode.UP, false)) {
+                    AudioClip boost = new AudioClip(this.getClass().getResource("thrust.wav").toString());
+                    boost.play();
                     ship.accelerate();
                 }
 
@@ -78,6 +81,8 @@ public class AsteroidsApplication extends Application {
                         projectile.accelerate();
                         projectile.setMovement(projectile.getMovement().normalize().multiply(3));
                         pane.getChildren().add(projectile.getCharacter());
+                        AudioClip fire = new AudioClip(this.getClass().getResource("fire.wav").toString());
+                        fire.play();
                         lastUpdate = now;
                     }
                 }
@@ -106,6 +111,9 @@ public class AsteroidsApplication extends Application {
                 projectiles.forEach(projectile -> {
                     asteroids.forEach(asteroid -> {
                         if (projectile.collide(asteroid)) {
+                            AudioClip hit =
+                                    new AudioClip(this.getClass().getResource("bangMedium.wav").toString());
+                            hit.play();
                             projectile.setAliveStatus(false);
                             asteroid.setAliveStatus(false);
                         }

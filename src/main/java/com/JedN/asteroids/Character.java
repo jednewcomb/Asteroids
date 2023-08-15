@@ -2,7 +2,7 @@
  *  Jed Newcomb - A character class which denotes objects
  *                seen on the screen during gameplay.
  */
-package com.example.asteroids;
+package com.JedN.asteroids;
 
 import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
