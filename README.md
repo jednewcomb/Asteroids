@@ -1,7 +1,3 @@
-You're very welcome! Here's a **condensed, professional, emoji-free** version of your Asteroids README:
-
----
-
 # Asteroids
 
 A 2D space shooter game built with JavaFX. Navigate a ship through space, destroy asteroids, and avoid collisions.
@@ -36,5 +32,3 @@ src/aoop/asteroids/   # Game classes
 images/               # Optional assets/screenshots
 make_and_run.sh       # Build & run script
 ```
-
----
